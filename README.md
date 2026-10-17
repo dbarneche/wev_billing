@@ -9,9 +9,8 @@ One command does the whole job:
 
 ```bash
 python3 cluster_energy_billing.py --months Apr-Jun \
-  --meters data/meters*03.csv data/meters*04.csv data/meters*05.csv \
-  data/meters*06.csv \
-  --pdfs data/supplier*04.pdf data/supplier*05.pdf data/supplier*06.pdf \
+  --meters data/meters_2026-03.csv data/meters_2026-04.csv data/meters_2026-05.csv data/meters_2026-06.csv \
+  --pdfs data/supplier_invoice_2026-04.pdf data/supplier_invoice_2026-05.pdf data/supplier_invoice_2026-06.pdf \
   --households data/households.csv \
   --xero-contacts data/Lot_Names_and_Addresses.csv
 ```
@@ -75,12 +74,12 @@ show the total plus a month-by-month breakdown.
 ## What's in this repository
 
 ```
-cluster-energy-billing/
+wev_billing/
 ├── cluster_energy_billing.py      ← the program (one file)
 ├── requirements.txt               ← Python packages it needs
 ├── README.md                      ← this guide
 ├── .gitignore                     ← stops invoices and real data being committed
-└── data/                          ← FICTITIOUS data to practise with
+└── data/                          ← FICTITIOUS example data to practise with
     ├── households.csv
     ├── Lot_Names_and_Addresses.csv
     ├── meters_2026-03.csv         ← March: only provides the opening readings
@@ -92,8 +91,7 @@ cluster-energy-billing/
     └── supplier_invoice_2026-06.pdf
 ```
 
-All names, addresses, emails, account numbers and readings in `data/`
-are made up.
+All names, addresses, emails, account numbers and readings in `data/` are made up.
 
 ---
 
@@ -123,8 +121,8 @@ Either download the repository as a ZIP from GitHub (green **Code** button →
 **Download ZIP**) and unzip it, or clone it:
 
 ```bash
-git clone https://github.com/<your-account>/cluster-energy-billing.git
-cd cluster-energy-billing
+git clone https://github.com/dbarneche/wev_billing.git
+cd wev_billing
 ```
 
 All commands in this guide are run from inside this folder.
@@ -171,11 +169,14 @@ From inside the repository folder (macOS / Linux):
 
 ```bash
 python3 cluster_energy_billing.py --months Apr-Jun \
-  --meters data/*.csv \
-  --pdfs data/*.pdf \
+  --meters data/meters_*.csv \
+  --pdfs data/supplier_invoice_*.pdf \
   --households data/households.csv \
   --xero-contacts data/Lot_Names_and_Addresses.csv
 ```
+
+> Use `data/meters_*.csv`, **not** `data/*.csv`: the folder also holds
+> `households.csv` and `Lot_Names_and_Addresses.csv`, which are not meter files.
 
 <details>
 <summary><b>Windows (PowerShell) version</b></summary>
@@ -231,7 +232,9 @@ to the extra CSV is the `meter_readings_ledger.csv` file from a previous run; se
 
 ### 1. `households.csv`: one row per household
 
-Kept **next to the script** (or pass `--households path/to/file.csv`).
+Pass its location with `--households`, e.g. `--households data/households.csv`.
+(Without the option, the script looks for `households.csv` **next to the script**,
+not in `data/`, and stops with *"Households file not found"* if it isn't there.)
 
 | Column | Required | Meaning | Example |
 |---|---|---|---|
@@ -255,8 +258,10 @@ columns are used:
 | `*ContactName` | The contact's name **exactly as it appears in Xero** | `Alex Archer & Jamie Archer` |
 | `AccountNumber` | `LOT` + lot number | `LOT1` |
 
-Keep it next to the script, or pass `--xero-contacts path/to/file.csv`. If it's
-missing, the household `Owners` names are used instead and a note is printed.
+Pass its location with `--xero-contacts`, e.g. `--xero-contacts data/Lot_Names_and_Addresses.csv`.
+(Without the option, the script looks **next to the script**. If the file isn't
+found, the household `Owners` names are used as Xero contact names and a note is
+printed. Make sure they match your Xero contacts before importing.)
 
 ### 3. Meter export CSVs: one file per month
 
@@ -352,7 +357,7 @@ in your terminal.
 | `--meters` | **required** | Meter export CSVs: one per billing month **plus the month before** (up to 13 files) |
 | `--pdfs` | **required** | Supplier invoice PDFs, one per billing month |
 | `--opening-readings` | *(none)* | Instead of the extra month's CSV: the `meter_readings_ledger.csv` from a previous run |
-| `--households` | `households.csv` next to the script | Path to the households table |
+| `--households` | `households.csv` next to the script | Path to the households table, e.g. `data/households.csv` |
 
 ### Behaviour
 
@@ -380,7 +385,7 @@ in your terminal.
 | Option | Default | Meaning |
 |---|---|---|
 | `--no-xero` | off | Don't write the Xero CSV files |
-| `--xero-contacts` | `Lot_Names_and_Addresses.csv` next to the script | Xero contacts export (matches each lot to its Xero contact) |
+| `--xero-contacts` | `Lot_Names_and_Addresses.csv` next to the script | Xero contacts export (matches each lot to its Xero contact), e.g. `data/Lot_Names_and_Addresses.csv` |
 | `--xero-invoice-suffix` | `/MMYY` of the invoice date | Ending of the Xero invoice numbers, e.g. `/0326` gives `2B6/0326`. **Must be different for every billing run**, because Xero rejects duplicate numbers. |
 | `--xero-invoice-date` | `--issue-date` | Invoice date written to Xero (`YYYY-MM-DD`) |
 | `--xero-due-date` | invoice due date | Due date written to Xero (`YYYY-MM-DD`) |
@@ -395,56 +400,69 @@ in your terminal.
 ## More examples
 
 > macOS/Linux shown. On Windows use `py` instead of `python3`, list files instead of
-> using `*`, and end continued lines with `` ` `` instead of `\`.
+> using `*` or `{…}`, and end continued lines with `` ` `` instead of `\`.
+>
+> The April–June examples run as-is on the example data in `data/`. The July
+> examples show the pattern for your own files (the repository has no July data).
+> Every example passes `--households` and `--xero-contacts`, because those files
+> live in `data/`, not next to the script.
 
 **Bill a single month** (June needs the May file for its opening readings):
 
 ```bash
 python3 cluster_energy_billing.py --months Jun \
-  --meters meters_2026-05.csv meters_2026-06.csv \
-  --pdfs supplier_invoice_2026-06.pdf
+  --meters data/meters_2026-05.csv data/meters_2026-06.csv \
+  --pdfs data/supplier_invoice_2026-06.pdf \
+  --households data/households.csv --xero-contacts data/Lot_Names_and_Addresses.csv
 ```
 
 **Bill a quarter with your own heading, dates and Xero numbering:**
 
 ```bash
 python3 cluster_energy_billing.py --year 2026 --months Apr-Jun \
-  --meters meters_2026-0{3,4,5,6}.csv \
-  --pdfs supplier_invoice_2026-0{4,5,6}.pdf \
+  --meters data/meters_2026-0{3,4,5,6}.csv \
+  --pdfs data/supplier_invoice_2026-0{4,5,6}.pdf \
+  --households data/households.csv --xero-contacts data/Lot_Names_and_Addresses.csv \
   --title "Example Eco Village - Cluster 2B" \
   --issuer "The Owners of Cluster 2B, Strata Plan 00000" \
   --issue-date 2026-07-15 --due-days 21 \
   --xero-invoice-suffix /Q2-26
 ```
 
-**Change a tariff**, e.g. a new peer-to-peer rate:
-
-```bash
-python3 cluster_energy_billing.py --months Jul --p2p-rate 0.22 \
-  --meters meters_2026-06.csv meters_2026-07.csv --pdfs supplier_invoice_2026-07.pdf
-```
-
-**Continue from last time's readings** instead of passing the previous month's CSV:
-
-```bash
-python3 cluster_energy_billing.py --months Jul \
-  --opening-readings invoices/meter_readings_ledger.csv \
-  --meters meters_2026-07.csv --pdfs supplier_invoice_2026-07.pdf \
-  --outdir invoices_july
-```
-
 **Reproduce the original spreadsheet's numbers** (extra meters such as DB1/DB2 not charged):
 
 ```bash
 python3 cluster_energy_billing.py --months Apr-Jun --extra-assets ignore \
-  --meters meters_2026-0{3,4,5,6}.csv --pdfs supplier_invoice_2026-0{4,5,6}.pdf
+  --meters data/meters_2026-0{3,4,5,6}.csv --pdfs data/supplier_invoice_2026-0{4,5,6}.pdf \
+  --households data/households.csv --xero-contacts data/Lot_Names_and_Addresses.csv
 ```
 
 **Invoices only, no Xero files, to a different folder:**
 
 ```bash
 python3 cluster_energy_billing.py --months Apr-Jun --no-xero --outdir draft_q2 \
-  --meters meters_2026-0{3,4,5,6}.csv --pdfs supplier_invoice_2026-0{4,5,6}.pdf
+  --meters data/meters_2026-0{3,4,5,6}.csv --pdfs data/supplier_invoice_2026-0{4,5,6}.pdf \
+  --households data/households.csv
+```
+
+**Change a tariff**, e.g. a new peer-to-peer rate (your own July files):
+
+```bash
+python3 cluster_energy_billing.py --months Jul --p2p-rate 0.22 \
+  --meters private/meters_2026-06.csv private/meters_2026-07.csv \
+  --pdfs private/supplier_invoice_2026-07.pdf \
+  --households private/households.csv --xero-contacts private/Lot_Names_and_Addresses.csv
+```
+
+**Continue from last time's readings** instead of passing the previous month's CSV
+(after a June run that wrote `invoices/meter_readings_ledger.csv`):
+
+```bash
+python3 cluster_energy_billing.py --months Jul \
+  --opening-readings invoices/meter_readings_ledger.csv \
+  --meters private/meters_2026-07.csv --pdfs private/supplier_invoice_2026-07.pdf \
+  --households private/households.csv --xero-contacts private/Lot_Names_and_Addresses.csv \
+  --outdir invoices_july
 ```
 
 ---
@@ -607,6 +625,8 @@ Numbers look like `2B6/0326` (cluster `2B`, lot `6`, suffix `/0326`). Choose a n
 | Message | What it means | Fix |
 |---|---|---|
 | `No opening read for '…' in Apr 2026` | The previous month's reading is missing. | Add the previous month's meter CSV to `--meters` (or a ledger with `--opening-readings`). |
+| `…: no column containing 'period start'` | A file passed to `--meters` isn't a meter export (e.g. `data/*.csv` also picked up `households.csv`). | Pass only the meter files, e.g. `--meters data/meters_*.csv`. |
+| `Households file not found` | No `--households` option was given, so the script looked next to itself. | Add `--households data/households.csv` (or wherever your file is). |
 | `No supplier PDF for: Jul 2026` | A billing month has no supplier invoice. | Add that month's PDF to `--pdfs`, or remove the month from `--months`. |
 | `More than one supplier PDF for …` | Two PDFs cover the same month. | Pass only one per month. |
 | `no 'Usage Calculations' section found` | The PDF isn't a supplier invoice in the expected format, or it's a scanned image. | Download the original PDF from the supplier. |
@@ -622,17 +642,30 @@ Numbers look like `2B6/0326` (cluster `2B`, lot `6`, suffix `/0326`). Choose a n
 
 ## Keeping real data private
 
-Meter readings, invoices and contact lists contain personal information. The
-included `.gitignore` keeps generated invoices (`invoices/`, `out*/`), the private
-`.billing-venv/`, and any `.csv`, `.pdf` or `.xlsx` file in the top folder **out of
-Git**. Only the fictitious files in `data/` are tracked.
+Meter readings, invoices and contact lists contain personal information, so keep
+your **real** files out of Git. The included `.gitignore` already ignores:
+
+- generated outputs: `invoices/` and any folder starting with `out`;
+- the private `.billing-venv/` and `.venv/` environments;
+- any `.csv`, `.pdf` or `.xlsx` file in the **top** folder;
+- a `private/` folder, for your real data.
+
+The fictitious example files in `data/` **are** tracked, so don't put real data there.
 
 A simple way to work:
 
 ```
-cluster-energy-billing/
+wev_billing/
 ├── cluster_energy_billing.py
-└── data/                         ← your real meter CSVs and PDFs (ignored by Git)
+├── data/                          ← fictitious examples (tracked by Git)
+└── private/                       ← your real files (ignored by Git)
+    ├── households.csv
+    ├── Lot_Names_and_Addresses.csv
+    ├── meters_2026-06.csv
+    ├── meters_2026-07.csv
+    └── supplier_invoice_2026-07.pdf
 ```
+
+Then point the options at it, e.g. `--households private/households.csv`.
 
 Before pushing, run `git status` and make sure no real data is listed.

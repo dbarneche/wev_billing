@@ -11,11 +11,12 @@ __pycache__/
 *.pyc
 
 # Real billing data: keep it out of the repository.
-# Only the fictitious files under example_data/ are tracked.
+# Put your real files in private/ (or the top folder). The fictitious
+# example files in data/ ARE tracked.
+private/
 /*.csv
 /*.pdf
 /*.xlsx
-data/
 
 # OS / editor clutter
 .DS_Store

@@ -1,0 +1,25 @@
+Cluster,Lot,Block Type,Owners,Street Address,Suburb,State,Post Code,Unit Entitlement,Export Capacity (kW),Energy Meter Installed,PV Installed,Functional Droplet
+2B,Lot 01,Cottage,Alex Archer & Jamie Archer,1 Banksia Way,Exampleville,WA,6999,36,5.0,Y,Y,Y
+2B,Lot 02,Cottage,Sam Baker,3 Wattle Grove,Exampleville,WA,6999,36,8.2,Y,Y,Y
+2B,Lot 03,Family home,Jordan Carver,5 Marri Rise,Exampleville,WA,6999,48,0.0,Y,N,Y
+2B,Lot 04,House,Taylor Dalton & Drew Dalton,7 Jarrah Lane,Exampleville,WA,6999,44,8.2,Y,Y,Y
+2B,Lot 05,House,Casey Ellis,9 Banksia Way,Exampleville,WA,6999,40,8.0,Y,Y,Y
+2B,Lot 06,Cottage,Morgan Fischer,11 Wattle Grove,Exampleville,WA,6999,39,8.0,Y,Y,Y
+2B,Lot 07,Family home,Riley Garner & Frankie Garner,13 Marri Rise,Exampleville,WA,6999,52,10.0,Y,Y,Y
+2B,Lot 08,House,Jamie Hale,15 Jarrah Lane,Exampleville,WA,6999,40,5.0,Y,Y,Y
+2B,Lot 09,House,Avery Irving,17 Banksia Way,Exampleville,WA,6999,44,0.0,Y,N,Y
+2B,Lot 10,House,Quinn Jensen & Kim Jensen,19 Wattle Grove,Exampleville,WA,6999,40,8.2,Y,Y,Y
+2B,Lot 11,House,Drew Keller,21 Marri Rise,Exampleville,WA,6999,40,6.6,Y,Y,Y
+2B,Lot 12,Cottage,Robin Lowe,23 Jarrah Lane,Exampleville,WA,6999,36,5.0,Y,Y,Y
+2B,Lot 13,House,Charlie Marsh & Noah Marsh,25 Banksia Way,Exampleville,WA,6999,44,8.0,Y,Y,Y
+2B,Lot 14,House,Frankie Nolan,27 Wattle Grove,Exampleville,WA,6999,40,10.0,Y,Y,Y
+2B,Lot 15,Cottage,Hayden Oakley,29 Marri Rise,Exampleville,WA,6999,36,0.0,Y,N,Y
+2B,Lot 16,Family home,Jesse Price & Sky Price,31 Jarrah Lane,Exampleville,WA,6999,48,8.2,Y,Y,Y
+2B,Lot 17,Family home,Kim Quill,33 Banksia Way,Exampleville,WA,6999,52,8.2,Y,Y,Y
+2B,Lot 18,Cottage,Lee Rowe,35 Wattle Grove,Exampleville,WA,6999,30,0.0,Y,N,Y
+2B,Lot 19,House,Max Sutton & Sam Sutton,37 Marri Rise,Exampleville,WA,6999,44,8.2,Y,Y,Y
+2B,Lot 20,House,Noah Thorne,39 Jarrah Lane,Exampleville,WA,6999,40,8.2,Y,Y,Y
+2B,Lot 21,House,Parker Upton,41 Banksia Way,Exampleville,WA,6999,44,8.0,Y,Y,Y
+2B,Lot 22,House,Reese Vance & Casey Vance,43 Wattle Grove,Exampleville,WA,6999,40,5.0,Y,Y,Y
+2B,Lot 23,House,Sky Walsh,45 Marri Rise,Exampleville,WA,6999,44,10.0,Y,Y,Y
+2B,Lot 24,House,Toni Yates,47 Jarrah Lane,Exampleville,WA,6999,43,8.0,Y,Y,Y
