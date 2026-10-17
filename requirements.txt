@@ -1,0 +1,9 @@
+# Python 3.9 or newer.
+# These are installed automatically on first run (see README), or manually with:
+#   python3 -m pip install -r requirements.txt
+numpy>=1.22
+pandas>=1.5
+openpyxl>=3.0
+reportlab>=3.6
+# Only needed when poppler's `pdftotext` command is not installed:
+pdfplumber>=0.9

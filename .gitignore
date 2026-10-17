@@ -1,0 +1,24 @@
+# Generated outputs (default --outdir) - never commit invoices
+invoices/
+out*/
+
+# Private environment created automatically by the script
+.billing-venv/
+.venv/
+
+# Python caches
+__pycache__/
+*.pyc
+
+# Real billing data: keep it out of the repository.
+# Only the fictitious files under example_data/ are tracked.
+/*.csv
+/*.pdf
+/*.xlsx
+data/
+
+# OS / editor clutter
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
